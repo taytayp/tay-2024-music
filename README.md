@@ -1,3 +1,6 @@
+# Welcome
+This is by Taylor!
+
 # Astro Starter Kit: Basics
 
 ```sh
