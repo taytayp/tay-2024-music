@@ -8,10 +8,25 @@ import Social from "./Social.astro";
     gap: 1rem;
     margin-top: 2rem;
   }
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0;
+  }
 </style>
 
 <footer>
-  <Social platform="github" username="taytayp" />
-  <Social platform="github" username="tfalkarkea" />
-  <Social platform="linkedin" username="falktaylor" />
+  <div>
+    <label for="personal">Personal</label>
+    <Social id="personal" platform="github" username="taytayp" />
+  </div>
+  <div>
+    <label for="professional">Professional</label>
+    <Social id="professional" platform="github" username="tfalkarkea" />
+  </div>
+  <div>
+    <label for="linkedin">Social</label>
+    <Social id="linkedin" platform="linkedin" username="falktaylor" />
+  </div>
 </footer>

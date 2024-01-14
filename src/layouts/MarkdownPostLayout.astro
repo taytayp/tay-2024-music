@@ -1,16 +1,19 @@
 ---
 const { frontmatter } = Astro.props;
 import BaseLayout from "./BaseLayout.astro";
-import { Image } from "astro:assets";
-import bird from "../img/argenteuil_1970.17.42.jpg";
 ---
 
 <BaseLayout pageTitle={frontmatter.title}>
-  <p><em>{frontmatter.description}</em></p>
-  <p>Written by {frontmatter.author}</p>
+  <p><em style="font-size: smaller;">{frontmatter.description}</em></p>
+  <p>Written by <strong>{frontmatter.author}</strong></p>
   <p>Published on: {frontmatter.pubDate.slice(0, 10)}</p>
-  <!-- <img src={frontmatter.image.url} width="100%" alt={frontmatter.image.alt} /> -->
-  <img src="../img/argenteuil_1970.17.42.jpg" alt="A bird." />
+  <div style="witdth:100%; height: 200px; overflow: hidden; ">
+    <img
+      src={frontmatter.image.url}
+      alt={frontmatter.image.alt}
+      style="width: 100%; display: block; justify-content: center; align-items: center;"
+    />
+  </div>
   <slot />
 </BaseLayout>
 <style>
