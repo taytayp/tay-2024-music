@@ -8,5 +8,23 @@ image:
   alt: "Claude Monet's _Argenteuil_, an impressionist painting c. 1872"
 pubDate: 2024-01-01
 ---
+import albums from "../../data/albums.tsv";
 
 Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
+
+## Introduction
+
+I can link internally to [my conclusion](#conclusion) on the same page when writing Markdown.
+
+<ul>
+    {
+      albums
+        .map((post) => <li>{post.Artist}</li>)
+    }
+</ul>
+
+## Conclusion
+
+Boy do I want to make it work.
+
+
