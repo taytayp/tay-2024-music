@@ -5,7 +5,7 @@ const { place, artist, album, image, writeup } = Astro.props;
 <div class="container">
   <div class="Place">{place}</div>
   <div class="Art">
-    <img src=`${image}` alt=`Album cover from ${artist}'s "${album}"` width="325px" />
+    <img src=`${image}` alt=`Album cover from ${artist}'s "${album}"` width="300px" />
   </div>
   <div class="Titles">
     <h3 class="artistname">{artist}</h3>
@@ -20,6 +20,9 @@ const { place, artist, album, image, writeup } = Astro.props;
     grid-template-columns: 0.25fr 1.5fr 1.5fr;
     grid-template-rows: 1fr auto;
     gap: 0px 0px;
+    border: 3px solid #555555;
+    border-radius: 10px;
+    margin: 5px;
     grid-auto-flow: row;
     grid-template-areas:
       "Place Art Titles"
@@ -29,10 +32,14 @@ const { place, artist, album, image, writeup } = Astro.props;
   .Place {
     grid-area: Place;
     align-self: center;
+    margin: auto;
+    font-size: 30px;
   }
 
   .Art {
     grid-area: Art;
+    margin: auto;
+    margin-top: 10px;
   }
 
   .Titles {
@@ -42,5 +49,6 @@ const { place, artist, album, image, writeup } = Astro.props;
 
   .Writeup {
     grid-area: Writeup;
+    padding-left: 5px;
   }
 </style>

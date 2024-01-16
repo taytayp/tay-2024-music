@@ -1,6 +1,5 @@
 ---
 import Social from "./Social.astro";
-import ThemeIcon from "./ThemeIcon.astro";
 ---
 
 <style>
@@ -8,6 +7,7 @@ import ThemeIcon from "./ThemeIcon.astro";
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
+    padding-bottom: 5px;
   }
   label {
     display: flex;
@@ -18,7 +18,6 @@ import ThemeIcon from "./ThemeIcon.astro";
 </style>
 
 <footer>
-  <ThemeIcon />
   <div>
     <label for="personal">Personal</label>
     <Social id="personal" platform="github" username="taytayp" />

@@ -13,19 +13,20 @@ import AlbumCard from "../../components/AlbumCard.astro"
 
 Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
 
-## Introduction
+# Introduction
 
 I can link internally to [my conclusion](#conclusion) on the same page when writing Markdown.
 
+
+# Albums
 <div>
     {
       albums
-        .reverse()
         .map((albo) => <AlbumCard place={albo.Place} artist={albo.Artist} album={albo.Album} image={albo.Image} writeup={albo.Writeup}/>)
     }
 </div>
 
-## Conclusion
+# Conclusion
 
 Boy do I want to make it work.
 

@@ -1,11 +1,38 @@
 ---
 import Navigation from "./Navigation.astro";
 import Hamburger from "./Hamburger.astro";
+import ThemeIcon from "./ThemeIcon.astro";
 ---
 
 <header>
   <nav>
-    <Hamburger />
-    <Navigation />
+    <div class="container">
+      <Hamburger class="Hamburg" />
+      <Navigation class="Links" />
+      <ThemeIcon class="Icon" />
+    </div>
   </nav>
 </header>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 1fr auto 0.5fr;
+    grid-template-rows: auto;
+    /* gap: 10px 10px; */
+    grid-auto-flow: row;
+    grid-template-areas: "Hamburg Links Icon";
+  }
+
+  .Hamburg {
+    grid-area: Hamburg;
+  }
+
+  .Links {
+    grid-area: Links;
+  }
+
+  .Icon {
+    grid-area: Icon;
+  }
+</style>
