@@ -1,0 +1,46 @@
+---
+const { place, artist, album, image, writeup } = Astro.props;
+---
+
+<div class="container">
+  <div class="Place">{place}</div>
+  <div class="Art">
+    <img src=`${image}` alt=`Album cover from ${artist}'s "${album}"` width="325px" />
+  </div>
+  <div class="Titles">
+    <h3 class="artistname">{artist}</h3>
+    <h4 class="albumname"><em>{album}</em></h4>
+  </div>
+  <div class="Writeup"><p class="writeup">{writeup}</p></div>
+</div>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 0.25fr 1.5fr 1.5fr;
+    grid-template-rows: 1fr auto;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Place Art Titles"
+      "Writeup Writeup Writeup";
+  }
+
+  .Place {
+    grid-area: Place;
+    align-self: center;
+  }
+
+  .Art {
+    grid-area: Art;
+  }
+
+  .Titles {
+    grid-area: Titles;
+    margin: auto;
+  }
+
+  .Writeup {
+    grid-area: Writeup;
+  }
+</style>

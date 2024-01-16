@@ -1,14 +1,15 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
-title: 2023 Music Feelings
+title: 2023 Music Feelings - Albums
 author: Taylor Falk
-description: "My thoughts about some music in the year 2023."
+description: "My thoughts about the best albums in the year 2023."
 image:
   url: "https://media.nga.gov/iiif/c6780a7f-2720-433c-9562-552c996c6d04/full/full/0/default.jpg?attachment_filename=argenteuil_1970.17.42.jpg"
   alt: "Claude Monet's _Argenteuil_, an impressionist painting c. 1872"
 pubDate: 2024-01-01
 ---
 import albums from "../../data/albums.tsv";
+import AlbumCard from "../../components/AlbumCard.astro"
 
 Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
 
@@ -16,12 +17,13 @@ Welcome to my _new blog_ about music! I spent a lot more time working on the tec
 
 I can link internally to [my conclusion](#conclusion) on the same page when writing Markdown.
 
-<ul>
+<div>
     {
       albums
-        .map((post) => <li>{post.Artist}</li>)
+        .reverse()
+        .map((albo) => <AlbumCard place={albo.Place} artist={albo.Artist} album={albo.Album} image={albo.Image} writeup={albo.Writeup}/>)
     }
-</ul>
+</div>
 
 ## Conclusion
 

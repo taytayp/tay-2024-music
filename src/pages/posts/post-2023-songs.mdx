@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 2023 Music Feelings - Songs
+author: Taylor Falk
+description: "Thoughts about some top songs in the year 2023."
+image:
+  url: "https://media.nga.gov/iiif/579777b9-33fb-493e-8e2c-89b972019854/full/full/0/default.jpg?attachment_filename=sainte-adresse_1990.59.1.jpg"
+  alt: "Claude Monet's _Sainte-Adresse_, an impressionist painting from 1867"
+pubDate: 2024-01-01
+---
+import songs from "../../data/songs.tsv";
+import AlbumCard from "../../components/AlbumCard.astro"
+
+Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
+
+## Introduction
+
+I can link internally to [my conclusion](#conclusion) on the same page when writing Markdown.
+
+<div>
+    {
+      songs
+        .reverse()
+        .map((albo) => <AlbumCard place={albo.Place} artist={albo.Artist} album={albo.Album} image={albo.Image} writeup={albo.Writeup}/>)
+    }
+</div>
+
+## Conclusion
+
+Boy do I want to make it work.
+
+
