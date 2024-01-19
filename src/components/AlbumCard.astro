@@ -2,7 +2,7 @@
 const { place, artist, album, image, writeup } = Astro.props;
 ---
 
-<div class="container">
+<div class="container" id={place < 11 ? "gold" : "normal"}>
   <div class="Place">{place}</div>
   <div class="Art">
     <img src=`${image}` alt=`Album cover from ${artist}'s "${album}"` width="300px" />
@@ -19,14 +19,23 @@ const { place, artist, album, image, writeup } = Astro.props;
     display: grid;
     grid-template-columns: 0.25fr 1.5fr 1.5fr;
     grid-template-rows: 1fr auto;
-    gap: 0px 0px;
-    border: 3px solid #555555;
-    border-radius: 10px;
-    margin: 5px;
+    margin: 25px;
     grid-auto-flow: row;
     grid-template-areas:
       "Place Art Titles"
       "Writeup Writeup Writeup";
+  }
+
+  #gold.container {
+    box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+    -webkit-box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+    -moz-box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+  }
+
+  #normal.container {
+    box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
+    -webkit-box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
+    -moz-box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
   }
 
   .Place {
