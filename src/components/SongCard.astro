@@ -1,15 +1,19 @@
 ---
-const { place, artist, album, image, writeup } = Astro.props;
+const { place, artist, song, image, writeup } = Astro.props;
 ---
 
-<div class="container">
+<div class="container column-item" id={place <= 16 ? "gold" : "normal"}>
   <div class="Place">{place}</div>
   <div class="Art">
-    <img src=`${image}` alt=`Album cover from ${artist}'s "${album}"` width="275px" />
+    <img
+      src=`${image}`
+      alt=`Album cover from ${artist}'s "${song}"`
+      width={place <= 16 ? "350px" : "200px"}
+    />
   </div>
   <div class="Titles">
     <h3 class="artistname">{artist}</h3>
-    <h4 class="albumname"><em>{album}</em></h4>
+    <h4 class="albumname"><em>{song}</em></h4>
   </div>
   <div class="Writeup"><p class="writeup">{writeup}</p></div>
 </div>
@@ -19,20 +23,37 @@ const { place, artist, album, image, writeup } = Astro.props;
     display: grid;
     grid-template-columns: 0.25fr 1.5fr 1.5fr;
     grid-template-rows: 1fr auto;
-    gap: 0px 0px;
+    margin: 25px;
     grid-auto-flow: row;
     grid-template-areas:
       "Place Art Titles"
       "Writeup Writeup Writeup";
   }
 
+  #gold.container {
+    box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+    -webkit-box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+    -moz-box-shadow: 0px 0px 11px 8px rgba(255, 223, 43, 0.75);
+    grid-column: span 2;
+  }
+
+  #normal.container {
+    box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
+    -webkit-box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
+    -moz-box-shadow: 0px 0px 11px 8px rgba(0, 0, 0, 0.65);
+  }
+
   .Place {
     grid-area: Place;
     align-self: center;
+    margin: auto;
+    font-size: 30px;
   }
 
   .Art {
     grid-area: Art;
+    margin: auto;
+    margin-top: 10px;
   }
 
   .Titles {
@@ -42,5 +63,6 @@ const { place, artist, album, image, writeup } = Astro.props;
 
   .Writeup {
     grid-area: Writeup;
+    padding-left: 5px;
   }
 </style>

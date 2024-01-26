@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
-import type { Code } from "astro:components";
 const allPosts = await Astro.glob("../pages/posts/post*.md?");
 const pageTitle = "My Music Blog";
 ---
@@ -15,5 +14,8 @@ const pageTitle = "My Music Blog";
         .reverse()
         .map((post) => <BlogPost url={post.url} title={post.frontmatter.title} />)
     }
+    <h3>Check out my older blogs too:</h3>
+    <BlogPost url="https://tay-2022-music.netlify.app/" title="2022 Music Blog" />
+    <BlogPost url="https://tay-2021-music.netlify.app/" title="2021 Music Blog" />
   </ul>
 </BaseLayout>

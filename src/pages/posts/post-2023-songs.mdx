@@ -9,24 +9,30 @@ image:
 pubDate: 2024-01-01
 ---
 import songs from "../../data/songs.tsv";
-import AlbumCard from "../../components/AlbumCard.astro"
+import SongCard from "../../components/SongCard.astro"
+import TeenyButton from "../../components/TeenyButton.astro"
 
-Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
+Welcome to the top songs of 2023! If you want the Spotify playlist very fast, head to the bottom: <TeenyButton link_text="Jump to bottom" astro_link="#conclusion"/>
 
 ## Introduction
 
-I can link internally to [my conclusion](#conclusion) on the same page when writing Markdown.
+I choose these with an eye towards songs I found catchy or experimental and listened to a lot, or music I found to be captivating on a more structural or technical level. The top 16 have a few words of mine about them.
 
-<div>
+Don't forget to enjoy the albums list as well! <TeenyButton link_text="Album list" astro_link="/posts/post-2023-albums"/>
+
+## Songs
+<div class="flex-column">
     {
       songs
-        .reverse()
-        .map((albo) => <AlbumCard place={albo.Place} artist={albo.Artist} album={albo.Album} image={albo.Image} writeup={albo.Writeup}/>)
+        .map((albo) => <SongCard place={albo.Place} artist={albo.Artist} song={albo.Song} image={albo.Image} writeup={albo.Writeup}/>)
     }
 </div>
 
 ## Conclusion
 
-Boy do I want to make it work.
+Can't wait to eat even more music in 2024 and digest it and poop it out into a blog!
+
+Here's my playlist :^)
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6YOjAbIKi5odlF4EWDnDBc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 

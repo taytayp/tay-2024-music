@@ -93,3 +93,9 @@ html {
   .dark a {
     color: #fff;
   }
+
+  .flex-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+  }

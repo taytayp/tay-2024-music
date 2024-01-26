@@ -1,9 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 const pageTitle = "I'm Taylor";
+import { Image } from "astro:assets";
+import kirby from "../images/kirby-headphones.gif";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
   <h2>Taylor's music blogs & coding content</h2>
   <p>I built this website myself, and I think it's great.</p>
+  <p>
+    Please check out the <a href="/blog/">blog</a> if you'd like to hear about some music!
+  </p>
+  <Image src={kirby} alt="An animated gif of Kirby listening to music." />
 </BaseLayout>
