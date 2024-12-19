@@ -1,0 +1,14 @@
+---
+title: "An Analysis of my 2024 Listening Habits"
+output: html_notebook
+---
+
+# Introduction
+
+
+
+```{r}
+plot(cars)
+```
+
+
