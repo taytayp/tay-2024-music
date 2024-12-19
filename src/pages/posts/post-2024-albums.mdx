@@ -1,0 +1,40 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 2023 Music Feelings - Albums
+author: Taylor Falk
+description: "My thoughts about the best albums in the year (of our lord) 2023."
+image:
+  url: "https://www.artic.edu/iiif/2/25c31d8d-21a4-9ea1-1d73-6a2eca4dda7e/full/843,/0/default.jpg"
+  alt: "Vincent van Gogh's _The Bedroom_, a painting."
+pubDate: 2024-01-25
+---
+import albums from "../../data/albums.tsv";
+import AlbumCard from "../../components/AlbumCard.astro"
+import TeenyButton from "../../components/TeenyButton.astro"
+
+Welcome to my _new blog_ about music! I spent a lot more time working on the technical side of this one, so I hope it beats your expectations!
+
+<div>
+  <TeenyButton link_text="Jump to bottom" astro_link="#conclusion"/>
+</div>
+
+# Introduction
+I collect 25 albums here, and this year I decided I would write a little blurb about all of them. Shoegaze, one of my favorite genres, had a really strong year in 2023 and I found a lot of material I liked, without even looking that hard. This year was also the first I spent a lot of time deliberately cataloging the music I listened to. By December 31st, I had clocked over 400 albums in total. I am hoping to go even higher next year! 
+
+Check out this years list of songs, too: <TeenyButton link_text="Songs list" astro_link="/posts/post-2023-songs"/>
+
+# Albums
+<div>
+  {
+    albums
+    .map((albo) => <AlbumCard place={albo.Place} artist={albo.Artist} album={albo.Album} image={albo.Image} writeup={albo.Writeup}/>)
+  }
+</div>
+
+# Conclusion
+Another great year in the books! Hope you liked what I had to say. This page, like me, will live forever so don't worry about bookmarking it.
+
+Don't forget to check out this years [songs list](/posts/post-2023-songs). 50 hot songs without an annoying radio DJ to count them down. Disclaimer: I used to be an annoying radio DJ. There's a playlist to favorite at the bottom too!
+
+---
+

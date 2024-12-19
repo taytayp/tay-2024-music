@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 2024 Music Feelings - Songs
+author: Taylor Falk
+description: "Thoughts about some top songs in the year 2024."
+image:
+  url: "https://www.artic.edu/iiif/2/3c27b499-af56-f0d5-93b5-a7f2f1ad5813/full/843,/0/default.jpg"
+  alt: "Claude Monet's _Water Lilies_, an impressionist painting from 1906"
+pubDate: 2024-01-25
+---
+import songs from "../../data/songs.tsv";
+import SongCard from "../../components/SongCard.astro"
+import TeenyButton from "../../components/TeenyButton.astro"
+
+Welcome to the top songs of 2024! Chosen by me with. Spotify list at da bottom: <TeenyButton link_text="Jump to bottom" astro_link="#conclusion"/>
+
+## Introduction
+
+I chose these songs because...
+
+Don't forget to enjoy the albums list as well! <TeenyButton link_text="Album list" astro_link="/posts/post-2024-albums"/>
+
+## Songs
+<div class="flex-column">
+    {
+      songs
+        .map((albo) => <SongCard place={albo.Place} artist={albo.Artist} song={albo.Song} image={albo.Image} writeup={albo.Writeup}/>)
+    }
+</div>
+
+## Conclusion
+
+{/* TODO */}
+
+Here's my playlist 🫡
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6YOjAbIKi5odlF4EWDnDBc?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+

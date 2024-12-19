@@ -1,20 +1,34 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
-const allPosts = await Astro.glob("../pages/posts/post*.md?");
+const lastPosts = await Astro.glob("../pages/posts/post-2023-*.md?");
+const newPosts = await Astro.glob("../pages/posts/post-2024-*.md?");
 const pageTitle = "My Music Blog";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
   <p>This is where I will post about my musical thoughts.</p>
   <p>The thoughts aren't musical, they're about music.</p>
+
+  <h3>My most recent song and album reviews:</h3>
   <ul>
     {
-      allPosts
+      newPosts
         .reverse()
         .map((post) => <BlogPost url={post.url} title={post.frontmatter.title} />)
     }
-    <h3>Check out my older blogs too:</h3>
+  </ul>
+
+  <h3>My posts from last year:</h3>
+  <ul>
+    {
+      lastPosts
+        .reverse()
+        .map((post) => <BlogPost url={post.url} title={post.frontmatter.title} />)
+    }
+  </ul>
+  <h3>Check out my older blogs too:</h3>
+  <ul>
     <BlogPost url="https://tay-2022-music.netlify.app/" title="2022 Music Blog" />
     <BlogPost url="https://tay-2021-music.netlify.app/" title="2021 Music Blog" />
   </ul>
