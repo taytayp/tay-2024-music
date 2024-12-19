@@ -4,11 +4,53 @@ output: html_notebook
 ---
 
 # Introduction
+Over the course of the year, I have maintained a spreedsheet [here]() to track the new albums and EPs of artists I like, were recommended to me by dutiful friends, or think I might be interested in.  
 
+When I found a release, I would write down the artist, album name, release date, when _I_ listened to it for the first time, my rating out of five stars (with half stars allowed), and if it was a full length LP and I had initially rated it 4 stars or higher, I would return to the album at least once to re-listen to it and award it a second, more specific rating. This second re-rate was on a scale of 4.00 to 5.00, allowing for increments in the hundredths.
 
+Finally, I also pulled the most common "tags" for artists from [Last.fm](), using their API to pull tags into my tracking sheet automatically. From this list, I grabbed the top 4 most common tags that weren't "seen live", a tag people use when they've seen that artist perform. When artists weren't so rare as to have tags and there weren't artists with duplicate names, this gave me a very useful semi-controlled vocabulary to categorize the artists and a _"genre"_ level. 
 
-```{r}
-plot(cars)
+```{r setup}
+library(tidyverse)
+table <- read_csv("2024_table.csv", show_col_types = FALSE)
+table %>%
+  mutate(EP_LP = as.factor(`EP/LP`),
+         Re_rate = `Re-rate`,
+         Vibes = lapply(lapply(Vibes, strsplit, ", |,"), unlist),
+         Released = as.Date(paste0(Released, "2024"), "%B-%d%Y"),
+         Listened = as.Date(paste0(Listened, "2024"), "%B-%d%Y"),
+         Stars = NULL,
+         `Re-rate` = NULL,
+         `EP/LP` = NULL) -> table
 ```
+# Plots
+In an effort to flex stupendously, here are some fun in-depths plots and graphs and doohickeys I've ripped from my data. I am not claiming any statistical observations, and since everything is my subjective rating anyways, the bias is baked in. Can't refute what you can't prove!
+
+## General Fun Stats
+```{r ep_lp_plot}
+ggplot(table, aes(x = EP_LP)) +
+  geom_bar() + 
+  xlab("EP or LP")
+
+# TODO: add numbers over plots
+```
+Unsurprisingly, the bulk of my listening is in LPs. The classic "album," to me an LP is the atomic unit for music listening. It's my most preferred method to enjoy an artist, spinning their record all the way through. That's not to say I don't spend a lot of time listening to one-offs or individual songs, it's just not where I spend my time exploring and ranking music.
+
+I enjoyed a lot of EPs this year, more than in years past, but I still find it tricky to spend a lot of time feeling engrossed with them. Always happy to put one on, though.
+```{r curve_of_shame}
+ggplot(table, aes(x = Score)) +
+  geom_bar(aes(fill = EP_LP))
+```
+This is my normal curve of shame 😔. In an ideal world, this would be centered over 2.5 and a healthy, symmetrical curve would extend in both directions. I have a few reasons for this:
+1. I am not going to seek out and choose many albums that fall into my personal 0-2 star range. This is music I think I'll like, so I don't feel too bad if most of the albums here are ones I anticipate liking from the get-go.
+2. I have an unofficial cutoff, where 4 or more stars means "I will try to listen to again, at least once." This means there is going to be a lot of data falling next to the 4 star value, especially albums that fall fuzzily in the 3.5-4.0 star range. I may just want to hear them again to assign a more precise score.
+3. They're my scores!!! Don't live under the boot of AP Statistics forever.
 
 
+## Words
+## Release completion (how quickly albums were listened to by release)
+## Best week by num top scores
+## Average time listened
+## Average score by time listened
+## most improved re-rate
+## Rainbow chart of album covers by date listened
