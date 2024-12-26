@@ -12,16 +12,25 @@ Finally, I also pulled the most common "tags" for artists from [Last.fm](), usin
 
 ```{r setup}
 library(tidyverse)
+library(wordcloud2)
+theme_set(theme_bw())
 table <- read_csv("2024_table.csv", show_col_types = FALSE)
 table %>%
   mutate(EP_LP = as.factor(`EP/LP`),
          Re_rate = `Re-rate`,
-         Vibes = lapply(lapply(Vibes, strsplit, ", |,"), unlist),
          Released = as.Date(paste0(Released, "2024"), "%B-%d%Y"),
          Listened = as.Date(paste0(Listened, "2024"), "%B-%d%Y"),
          Stars = NULL,
          `Re-rate` = NULL,
-         `EP/LP` = NULL) -> table
+         `EP/LP` = NULL) %>%
+  mutate(Net_Time = Listened - Released) -> table
+table %>%
+  mutate(vibe1 = str_split_fixed(table$Vibes, pattern = ", |,", 5)[,1],
+         vibe2 = str_split_fixed(table$Vibes, pattern = ", |,", 5)[,2],
+         vibe3 = str_split_fixed(table$Vibes, pattern = ", |,", 5)[,3],
+         vibe4 = str_split_fixed(table$Vibes, pattern = ", |,", 5)[,4],
+         Vibes = NULL) -> table
+table[table==""] <- NA
 ```
 # Plots
 In an effort to flex stupendously, here are some fun in-depths plots and graphs and doohickeys I've ripped from my data. I am not claiming any statistical observations, and since everything is my subjective rating anyways, the bias is baked in. Can't refute what you can't prove!
@@ -29,10 +38,14 @@ In an effort to flex stupendously, here are some fun in-depths plots and graphs 
 ## General Fun Stats
 ```{r ep_lp_plot}
 ggplot(table, aes(x = EP_LP)) +
-  geom_bar() + 
+  geom_bar(stat = "count") + 
+  stat_count(geom = "text", 
+             colour = "white", 
+             size = 3.5, 
+             aes(label = after_stat(count)),
+             position=position_stack(vjust=0.5)) +
   xlab("EP or LP")
 
-# TODO: add numbers over plots
 ```
 Unsurprisingly, the bulk of my listening is in LPs. The classic "album," to me an LP is the atomic unit for music listening. It's my most preferred method to enjoy an artist, spinning their record all the way through. That's not to say I don't spend a lot of time listening to one-offs or individual songs, it's just not where I spend my time exploring and ranking music.
 
@@ -46,11 +59,65 @@ This is my normal curve of shame 😔. In an ideal world, this would be centered
 2. I have an unofficial cutoff, where 4 or more stars means "I will try to listen to again, at least once." This means there is going to be a lot of data falling next to the 4 star value, especially albums that fall fuzzily in the 3.5-4.0 star range. I may just want to hear them again to assign a more precise score.
 3. They're my scores!!! Don't live under the boot of AP Statistics forever.
 
+## Release completion (how quickly albums were listened to by release)
+```{r dates_not_the_fruit}
+table %>%
+  ggplot(aes(x=Released, y=Listened)) +
+  geom_point(aes(color=Score))
+
+table %>%
+  mutate(Score = as.factor(Score)) %>%
+  ggplot(aes(x = Score, y = Net_Time)) +
+    geom_violin()
+```
+Delightfully, I've been fairly consistent on listening to releases pretty soon after they come out. Outliers here may not necessarily indicate a negligence in listening to an album I did or didn't like, but many times I don't hear about an album until a few months later and it comes across my proverbial desk!
 
 ## Words
-## Release completion (how quickly albums were listened to by release)
-## Best week by num top scores
+```{r ugh_words}
+table %>%
+  select(vibe1, vibe2, vibe3, vibe4) %>%
+  pivot_longer(c(vibe1, vibe2, vibe3, vibe4)) %>%
+  count(value) %>%
+  arrange(desc(n)) %>%
+  mutate(value = factor(value, levels=value)) %>%
+  filter(n > 30) %>%
+  ggplot(aes(x = value, y =  n)) +
+  geom_point() + 
+  xlab("genre/tag") +
+  ylab("number of releases tagged") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1.025))
+```
+Unsurprisingly, because I am a white man in my 30s, my top genres are in the indie sphere of music. I am more pleased to see a good chunk of experimental, as well as hip-hop, rap, and female vocalists (#feminism). A smaller cohort of shoegaze bands that I would imagine I listened to last year, but the trend is there! There is, naturally, some collision of the data ("hip-hop" and "hip hop" being different tags).
+
+```{r hate_cloud}
+wordcloud2(feminism_table)
+```
+I hate word clouds but this is unfortunately a good application. 
+
+```{r butts}
+letterCloud(feminism_table, word = "BUTT", wordSize = 1.75)
+```
+Okay this is a better application, I take it back. Word clouds are good.
+
+## Best week by number top scores
+```{r top_week}
+table %>%
+  mutate(week = cut.Date(Listened, breaks = "1 week", labels = FALSE)) %>% 
+  group_by(week) %>%
+  summarize(Mean = mean(Score, na.rm = TRUE)) %>%
+  ggplot(aes(x = week, Mean)) +
+  geom_point() +
+  stat_summary(fun.data=mean_cl_normal) + 
+  geom_smooth(method='lm') +
+  xlab("Calendar Week") +
+  ylab("Mean Score")
+```
+This chart demonstrates that my ratings seems to increase as the year progresses. I also have about two thoughts for this one:
+1. Earlier in the year is generally slower for big releases (January and February).
+2. Every year I need to "find my bearings" when it comes to rating releases. I have a feeling
+
 ## Average time listened
+
 ## Average score by time listened
 ## most improved re-rate
 ## Rainbow chart of album covers by date listened
