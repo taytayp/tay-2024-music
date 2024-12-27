@@ -7,10 +7,9 @@ const pageTitle = "My Music Blog";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <p>This is where I will post about my musical thoughts.</p>
-  <p>The thoughts aren't musical, they're about music.</p>
+  <p>Please enjoy my posts about my musical thoughts.</p>
 
-  <h3>My most recent song and album reviews:</h3>
+  <h2>My most recent song and album reviews:</h2>
   <ul>
     {
       newPosts
@@ -18,8 +17,15 @@ const pageTitle = "My Music Blog";
         .map((post) => <BlogPost url={post.url} title={post.frontmatter.title} />)
     }
   </ul>
+  <h3>Please take a special look at my data deep dive:</h3>
+  <ul>
+    <a href="/2024_music_digest" target="_blank" rel="noopener noreferrer"
+      >Buncha nerd shit</a
+    >
+  </ul>
 
-  <h3>My posts from last year:</h3>
+  <hr />
+  <h2>My posts from last year:</h2>
   <ul>
     {
       lastPosts
