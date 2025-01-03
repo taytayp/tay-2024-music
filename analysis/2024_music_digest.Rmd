@@ -26,8 +26,8 @@ table <- read_csv("2024_table.csv", show_col_types = FALSE)
 table %>%
   mutate(EP_LP = as.factor(`EP/LP`),
          Re_rate = `Re-rate`,
-         Released = as.Date(paste0(Released, "2024"), "%B-%d%Y"),
-         Listened = as.Date(paste0(Listened, "2024"), "%B-%d%Y"),
+         Released = as.Date(paste0(Released, ", 2024"), "%B %d, %Y"),
+         Listened = as.Date(paste0(Listened, ", 2024"), "%B %d, %Y"),
          Stars = NULL,
          `Re-rate` = NULL,
          `EP/LP` = NULL) %>%
@@ -46,20 +46,28 @@ In an effort to flex stupendously, here are some fun in-depths plots and graphs 
 ## General Fun Stats
 ```{r ep_lp_plot}
 ggplot(table, aes(x = EP_LP)) +
-  geom_bar(stat = "count") + 
+  geom_bar(stat = "count", aes(fill = EP_LP)) + 
   stat_count(geom = "text", 
              colour = "white", 
              size = 3.5, 
              aes(label = after_stat(count)),
              position=position_stack(vjust=0.5)) +
-  xlab("EP or LP") -> p
-ggplotly()
+  scale_fill_manual(values=c("#D87CAC", "#247BA0")) +
+  ylab("Count") + 
+  xlab("EP or LP") +
+  ggtitle("Number of EPs and LPs listened") +
+  guides(fill="none") -> p
+ggplotly(tooltip = "count")
 ```
 Unsurprisingly, the bulk of my listening is in LPs. The classic "album," to me an LP is the atomic unit for music listening. It's my most preferred method to enjoy an artist, spinning their record all the way through. That's not to say I don't spend a lot of time listening to one-offs or individual songs, it's just not where I spend my time exploring and ranking music.
 
 I enjoyed a lot of EPs this year, more than in years past, but I still find it tricky to spend a lot of time feeling engrossed with them. Always happy to put one on, though.
 ```{r curve_of_shame}
 ggplot(table, aes(x = Score)) +
+  guides(fill=guide_legend(title="EP/LP")) +
+  scale_fill_manual(values=c("#D87CAC", "#247BA0")) +
+  ggtitle("EP and LP Counts by Score") +
+  ylab("Count") +
   geom_bar(aes(fill = EP_LP)) -> p
 ggplotly()
 ```
@@ -71,15 +79,22 @@ This is my normal curve of shame 😔. In an ideal world, this would be centered
 ## Release completion (how quickly albums were listened to by release)
 ```{r dates_not_the_fruit}
 table %>%
-  ggplot(aes(x=Released, y=Listened)) +
-  geom_point(aes(color=Score)) -> p
-ggplotly()
+  ggplot(aes(x=Released, y=Listened, label = Artist, label2 = Album)) +
+  scale_color_gradient2() +
+  ggtitle("Release Date vs. Listen Date by Score") + 
+  xlab("Date Released") + ylab("Date Listened") +
+  geom_jitter(aes(color=Score), width = 5, height = 5) -> p
+ggplotly(tooltip = "all", height = 800, width = 800)
 
 table %>%
-  mutate(Score = as.factor(Score)) %>%
+  mutate(Score = as.factor(Score),
+         Net_Time = as.integer(Net_Time)) %>%
   ggplot(aes(x = Score, y = Net_Time)) +
-    geom_violin() -> p2
-ggplotly()
+  geom_violin() +
+  scale_y_continuous(breaks = c(0, 1, 7, 14, 30, 100), trans="log10") +
+  ggtitle("Violin Plot of Release Dates, Listening Dates, and Score") +
+  ylab("Net time (date listened - date released)") -> p
+ggplotly(tooltip = "Score")
 ```
 Delightfully, I've been fairly consistent on listening to releases pretty soon after they come out. Outliers here may not necessarily indicate a negligence in listening to an album I did or didn't like, but many times I don't hear about an album until a few months later and it comes across my proverbial desk!
 
@@ -96,8 +111,9 @@ feminism_table %>%
   filter(n > 30) %>%
   ggplot(aes(x = value, y =  n)) +
   geom_point() + 
-  xlab("genre/tag") +
-  ylab("number of releases tagged") + 
+  xlab("Genre/tag") +
+  ylab("Number of releases tagged") + 
+  ggtitle("Top 30 Most Common Tags Among Releases") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1.025)) -> p
 ggplotly()
 ```
@@ -107,11 +123,6 @@ Unsurprisingly, because I am a white man in my 30s, my top genres are in the ind
 wordcloud2(feminism_table)
 ```
 I hate word clouds but this is unfortunately a good application. 
-
-```{r butts}
-letterCloud(feminism_table, word = "BUTT", wordSize = 1.75)
-```
-Okay this is a better application, I take it back. Word clouds are good.
 
 ## Best week by number top scores
 ```{r top_week}
@@ -124,6 +135,7 @@ table %>%
   stat_summary(fun.data=mean_cl_normal) + 
   geom_smooth(method='lm') +
   xlab("Calendar Week Listened") +
+  ggtitle("Mean Rating Grouped by Calendar Week (Listened)") +
   ylab("Mean Score") -> p
 ggplotly()
 ```
@@ -141,6 +153,7 @@ table %>%
   stat_summary(fun.data=mean_cl_normal) + 
   geom_smooth(method='lm') +
   xlab("Calendar Week Released") +
+  ggtitle("Mean Rating Grouped by Calendar Week (Released)") +
   ylab("Mean Score") -> p
 ggplotly()
 ```
@@ -155,8 +168,8 @@ table %>%
   mutate(abs_netrate = abs(netrate)) %>%
   arrange(desc(Re_rate)) %>%
   mutate(Artist = factor(Artist, levels = Artist)) %>%
-  slice(1:25) -> toptable
-ggplot(toptable, aes(x = Artist, y = Re_rate)) +
+  slice(1:30) -> toptable
+ggplot(toptable, aes(x = Artist, y = Re_rate, label = Album)) +
   geom_blank() + 
   geom_segment(data = toptable[toptable$netrate > 0, ], 
                aes(x=Artist, xend=Artist, y=Score, yend=Re_rate), colour="black") +
@@ -166,6 +179,7 @@ ggplot(toptable, aes(x = Artist, y = Re_rate)) +
   geom_point(fill = "grey", color = "black", aes(y = Score), pch=21) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1.025)) +
   scale_y_continuous(breaks = c(4, 4.25, 4.5, 4.75, 5)) +
+  ggtitle("Top 30 Album Ratings, with Re-rates Included") +
   ylab("Ratings") -> p
 ggplotly()
 ```
