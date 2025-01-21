@@ -168,7 +168,7 @@ table %>%
   mutate(abs_netrate = abs(netrate)) %>%
   arrange(desc(Re_rate)) %>%
   mutate(Artist = factor(Artist, levels = Artist)) %>%
-  slice(1:30) -> toptable
+  slice(1:25) -> toptable
 ggplot(toptable, aes(x = Artist, y = Re_rate, label = Album)) +
   geom_blank() + 
   geom_segment(data = toptable[toptable$netrate > 0, ], 
